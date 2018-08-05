@@ -13,6 +13,16 @@ public class Map {
 		this.id = id;
 		this.graph = new DefaultDirectedGraph<>(IEdge.class);
 	}
+
+	public String getId() {
+		return id;
+	}
+
+
+	public Graph<INode, IEdge> getGraph() {
+		return graph;
+	}
 	
+		
 
 }

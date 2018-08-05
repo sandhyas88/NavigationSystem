@@ -1,24 +1,36 @@
 package com.microsoft.navigation.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Path {
 
+	private INode source;
+	private INode destination;
 	private double totalDistance;
-	private ArrayList<INode> nodes;
+	private List<INode> nodes;
 	
-	public Path(double distance,ArrayList<INode> nodes)
+	public Path(INode source, INode destination, double distance,List<INode> nodes2)
 	{
 		this.totalDistance = distance;
-		this.nodes = nodes;
+		this.nodes = nodes2;
+		this.source = source;
+		this.destination = destination;
 	}
 	
 	public double getTotalDistance() {
 		return totalDistance;
 	}
 	
-	public ArrayList<INode> getNodes() {
+	public List<INode> getNodes() {
 		return nodes;
+	}
+
+	public INode getSource() {
+		return source;
+	}
+
+	public INode getDestination() {
+		return destination;
 	}
 	
 	
