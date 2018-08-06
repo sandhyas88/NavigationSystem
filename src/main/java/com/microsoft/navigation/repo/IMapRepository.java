@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.microsoft.navigation.model.Map;
 
-public interface MapRepository extends CrudRepository<Map, String> {
+public interface IMapRepository extends CrudRepository<Map, String> {
 
 }

@@ -2,17 +2,17 @@ package com.microsoft.navigation.model;
 
 public class Building implements INode {
 	
-	private String name;
+	private String id;
 	
-	public Building(String name)
+	public Building(String id)
 	{
-		this.name = name;
+		this.id = id;
 	}
 
 	@Override
-	public String getName() {
+	public String getId() {
 		
-		return name;
+		return id;
 	}
 	
 

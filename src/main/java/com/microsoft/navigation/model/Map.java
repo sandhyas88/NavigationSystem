@@ -1,17 +1,23 @@
 package com.microsoft.navigation.model;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultDirectedGraph;
+import java.io.Serializable;
+import java.util.Set;
 
-public class Map {
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.springframework.data.redis.core.RedisHash;
+
+@RedisHash("Map")
+public class Map implements Serializable {
 	
+	private static final long serialVersionUID = 7279406294916559817L;
 	private String id;
-	private Graph<INode, IEdge> graph;
+	private DefaultDirectedWeightedGraph<INode, IEdge> graph;
 	
-	public Map(String id)
+	public Map(String id, DefaultDirectedWeightedGraph<INode, IEdge> defaultDirectedWeightedGraph)
 	{
 		this.id = id;
-		this.graph = new DefaultDirectedGraph<>(IEdge.class);
+		this.graph = new DefaultDirectedWeightedGraph<>(IEdge.class);
 	}
 
 	public String getId() {
@@ -19,10 +25,22 @@ public class Map {
 	}
 
 
-	public Graph<INode, IEdge> getGraph() {
+	public DefaultDirectedWeightedGraph<INode, IEdge> getGraph() {
 		return graph;
 	}
 	
+	public INode getNodeById(String nodeId)
+	{
+		Set<INode> nodes = graph.vertexSet();
+		for(INode node : nodes)
+		{
+			if(node.getId().equals(nodeId))
+			{
+				return node;
+			}
+		}
+		return null;
+	}
 		
 
 }
