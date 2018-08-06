@@ -1,5 +1,7 @@
 package com.microsoft.navigation.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +48,24 @@ public class NavigationController {
 		return path;
     }
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.OK)
+    public String getSomething(HttpServletResponse response) {
+
+		return "Hello hello hello";
+		
+    }
+	
+	@RequestMapping(value = "/test2", method = RequestMethod.POST, consumes = { "application/json" })
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createMap(@RequestBody final MapRequest mapRequest, HttpServletResponse response) {
 		
 		String mapId = mapRequest.getId();
-		String nodeJson = mapRequest.getNodes();
+		HashMap<String,HashMap<String,Double>> nodeMap = mapRequest.getNodes();
 
-		Map map = mapRepository.findById(mapId).orElse(null);
+		 Map map = mapRepository.findById(mapId).orElse(null);
 		//need to add preconditions
 		if(map == null)
 		{
@@ -62,7 +73,7 @@ public class NavigationController {
 			IEdgeBuilder edgeBuilder = new DefaultEdgeBuilder();
 			IGraphBuilder graphBuilder = new GraphBuilder(edgeBuilder, nodeBuilder);
 			GraphEngineer graphEngineer = new GraphEngineer(graphBuilder);
-			map = new Map(mapId,graphEngineer.makeGraph(nodeJson));
+			map = new Map(mapId,graphEngineer.makeGraph(nodeMap));
 			mapRepository.save(map);
 		}
     }

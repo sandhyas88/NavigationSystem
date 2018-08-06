@@ -1,16 +1,21 @@
 package com.microsoft.navigation.model;
 
-public class DefaultEdge implements IEdge {
+import org.jgrapht.graph.DefaultWeightedEdge;
 
+public class DefaultEdge extends DefaultWeightedEdge implements IEdge {
+
+	private static final long serialVersionUID = -407262409533004719L;
 	private INode source;
 	private INode destination;
 	private double distance;
+	private String label;
 	
-	public DefaultEdge(INode source, INode destination, double distance)
+	public DefaultEdge(INode source, INode destination, double distance) 
 	{
 		this.distance = distance;
 		this.source = source;
 		this.destination = destination;
+		this.label = source.getId() + "-" + destination.getId(); 
 	}
 	
 	
@@ -29,7 +34,29 @@ public class DefaultEdge implements IEdge {
 		return destination;
 	}
 
+	public String getLabel() {
+		return label;
+	}
 
-	
+	public int hashCode()
+	{
+		return label.hashCode();
+	}
+
+	public boolean equals(Object obj)
+	{
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof DefaultEdge)) {
+			return false;
+		}
+
+		DefaultEdge edge = (DefaultEdge) obj;
+		return label.equals(edge.label);
+	}
 	
 }

@@ -1,9 +1,11 @@
 package com.microsoft.navigation.model;
 
+import java.util.HashMap;
+
 public class MapRequest {
 	
 	private String id;
-	private String nodes;
+	private HashMap<String,HashMap<String,Double>> nodes;
 	
 	public String getId() {
 		return id;
@@ -11,10 +13,10 @@ public class MapRequest {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getNodes() {
+	public HashMap<String, HashMap<String, Double>> getNodes() {
 		return nodes;
 	}
-	public void setNodes(String nodes) {
+	public void setNodes(HashMap<String, HashMap<String, Double>> nodes) {
 		this.nodes = nodes;
 	}
 	

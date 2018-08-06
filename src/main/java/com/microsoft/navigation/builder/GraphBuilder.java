@@ -1,19 +1,19 @@
 package com.microsoft.navigation.builder;
 
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 import com.microsoft.navigation.model.IEdge;
 import com.microsoft.navigation.model.INode;
 
 public class GraphBuilder implements IGraphBuilder {
 	
-	private DefaultDirectedWeightedGraph<INode, IEdge> graph;
+	private SimpleDirectedWeightedGraph<INode, IEdge> graph;
 	private IEdgeBuilder edgeBuilder;
 	private INodeBuilder nodeBuilder;
 	
 	public GraphBuilder(IEdgeBuilder edgeBuilder, INodeBuilder nodeBuilder)
 	{
-		this.graph = new DefaultDirectedWeightedGraph<INode,IEdge>(IEdge.class);
+		this.graph = new SimpleDirectedWeightedGraph<INode,IEdge>(IEdge.class);
 		this.edgeBuilder = edgeBuilder;
 		this.nodeBuilder = nodeBuilder;
 	}
@@ -33,7 +33,7 @@ public class GraphBuilder implements IGraphBuilder {
 		return edge;
 	}
 	
-	public DefaultDirectedWeightedGraph<INode, IEdge> getGraph()
+	public SimpleDirectedWeightedGraph<INode, IEdge> getGraph()
 	{
 		return this.graph;
 	}

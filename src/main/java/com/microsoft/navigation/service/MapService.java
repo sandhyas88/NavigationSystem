@@ -5,12 +5,14 @@ import java.util.List;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.springframework.stereotype.Service;
 
 import com.microsoft.navigation.model.IEdge;
 import com.microsoft.navigation.model.INode;
 import com.microsoft.navigation.model.Map;
 import com.microsoft.navigation.model.Path;
 
+@Service
 public class MapService implements IMapService {
 
 	@Override

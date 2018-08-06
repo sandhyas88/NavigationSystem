@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.springframework.data.redis.core.RedisHash;
 
 @RedisHash("Map")
@@ -14,7 +15,7 @@ public class Map implements Serializable {
 	private String id;
 	private DefaultDirectedWeightedGraph<INode, IEdge> graph;
 	
-	public Map(String id, DefaultDirectedWeightedGraph<INode, IEdge> defaultDirectedWeightedGraph)
+	public Map(String id, SimpleDirectedWeightedGraph<INode, IEdge> simpleDirectedWeightedGraph)
 	{
 		this.id = id;
 		this.graph = new DefaultDirectedWeightedGraph<>(IEdge.class);
