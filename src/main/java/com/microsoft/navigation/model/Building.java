@@ -14,6 +14,11 @@ public class Building implements INode {
 		
 		return id;
 	}
-	
 
+	@Override
+	public String toString() {
+		return id;
+	}
+	
+	
 }

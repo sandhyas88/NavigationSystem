@@ -1,38 +1,26 @@
 package com.microsoft.navigation.model;
 
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Path {
 
-	private INode source;
-	private INode destination;
 	private double totalDistance;
-	private List<INode> nodes;
+	private String[] nodes;
 	
-	public Path(INode source, INode destination, double distance,List<INode> nodes2)
+	public Path(double distance,String[] nodes)
 	{
 		this.totalDistance = distance;
-		this.nodes = nodes2;
-		this.source = source;
-		this.destination = destination;
+		this.nodes = nodes;
 	}
 	
 	public double getTotalDistance() {
 		return totalDistance;
 	}
 	
-	public List<INode> getNodes() {
+	@JsonProperty("path")
+	public String[] getNodes() {
 		return nodes;
 	}
-
-	public INode getSource() {
-		return source;
-	}
-
-	public INode getDestination() {
-		return destination;
-	}
-	
-	
 	
 }

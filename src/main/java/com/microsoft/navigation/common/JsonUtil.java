@@ -1,6 +1,5 @@
 package com.microsoft.navigation.common;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
@@ -9,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.navigation.exceptions.NavigationSystemException;
 
 public class JsonUtil {
 	
@@ -22,7 +22,8 @@ public class JsonUtil {
 			
 			nodeMap = mapper.readValue(json, new TypeReference<HashMap<String,HashMap<String,Double>>>(){});
 		} catch (Exception e) {
-			logger.error("Error in parsing json",e);
+			logger.error("Error in parsing json" + json,e);
+			throw new NavigationSystemException("Error in parsing json" + json,e);
 		}
 		return nodeMap;
 		
@@ -35,11 +36,10 @@ public class JsonUtil {
 			rootNode = mapper.readTree(json);
 			String id = rootNode.get(name).asText();
 			return id;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("Error in parsing json" + json,e);
+			throw new NavigationSystemException("Error in parsing json" + json,e);
 		}
-		return null;
 		
 	}
 	
@@ -50,11 +50,11 @@ public class JsonUtil {
 			rootNode = mapper.readTree(json);
 			JsonNode node = rootNode.get(name);
 			return mapper.writeValueAsString(node);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("Error in parsing json" + json,e);
+			throw new NavigationSystemException("Error in parsing json" + json,e);
 		}
-		return null;
 		
 	}
+	
 }
