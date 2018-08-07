@@ -66,7 +66,7 @@ public class NavigationController {
 		}
     }
 	
-	@RequestMapping(value = "/test2", method = RequestMethod.POST, consumes = { "application/json" })
+	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = { "application/json" })
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
     public void createMap(@RequestBody final String mapDetails, HttpServletResponse response) {
