@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.springframework.stereotype.Service;
 
 import com.microsoft.navigation.model.IEdge;
@@ -17,7 +17,7 @@ public class MapService implements IMapService {
 
 	@Override
 	public Path getShortestPath(Map map, String sourceId, String destinationId) {
-		DefaultDirectedWeightedGraph<INode,IEdge> graph = map.getGraph();
+		SimpleDirectedWeightedGraph<INode,IEdge> graph = map.getGraph();
 		INode source = map.getNodeById(sourceId);
 		INode destination = map.getNodeById(destinationId);
 		DijkstraShortestPath<INode,IEdge> dsp = new DijkstraShortestPath<>(graph);

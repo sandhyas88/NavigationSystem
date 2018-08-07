@@ -1,9 +1,12 @@
 package com.microsoft.navigation.repo;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import com.microsoft.navigation.model.Map;
+import com.microsoft.navigation.model.MapRequest;
 
-public interface IMapRepository extends CrudRepository<Map, String> {
+
+@Repository
+public interface IMapRepository extends CrudRepository<MapRequest, String> {
 
 }

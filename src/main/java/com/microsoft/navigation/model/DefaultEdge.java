@@ -1,8 +1,10 @@
 package com.microsoft.navigation.model;
 
+import java.io.Serializable;
+
 import org.jgrapht.graph.DefaultWeightedEdge;
 
-public class DefaultEdge extends DefaultWeightedEdge implements IEdge {
+public class DefaultEdge extends DefaultWeightedEdge implements IEdge, Serializable {
 
 	private static final long serialVersionUID = -407262409533004719L;
 	private INode source;
@@ -58,5 +60,13 @@ public class DefaultEdge extends DefaultWeightedEdge implements IEdge {
 		DefaultEdge edge = (DefaultEdge) obj;
 		return label.equals(edge.label);
 	}
+
+
+	@Override
+	public String toString() {
+		return "DefaultEdge [source=" + source + ", destination=" + destination + ", distance=" + distance + ", label="
+				+ label + "]";
+	}
+	
 	
 }

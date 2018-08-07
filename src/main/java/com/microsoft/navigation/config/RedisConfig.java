@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 
+
 @Configuration
 @ComponentScan("com.microsoft.navigation")
 @EnableRedisRepositories(basePackages = "com.microsoft.navigation.repo")
@@ -27,6 +28,5 @@ public class RedisConfig {
         template.setValueSerializer(new GenericToStringSerializer<Object>(Object.class));
         return template;
     }
-
 
 }

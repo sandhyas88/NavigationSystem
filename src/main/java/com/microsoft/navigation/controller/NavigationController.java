@@ -22,6 +22,7 @@ import com.microsoft.navigation.builder.IEdgeBuilder;
 import com.microsoft.navigation.builder.IGraphBuilder;
 import com.microsoft.navigation.builder.INodeBuilder;
 import com.microsoft.navigation.common.GraphEngineer;
+import com.microsoft.navigation.common.JsonUtil;
 import com.microsoft.navigation.model.Map;
 import com.microsoft.navigation.model.MapRequest;
 import com.microsoft.navigation.model.Path;
@@ -38,14 +39,31 @@ public class NavigationController {
 	@Autowired
 	private IMapRepository mapRepository;
 	
-	@RequestMapping(value = "/{mapId}/path", method = RequestMethod.GET)
+	@RequestMapping(value = "/{mapId}/path", method = RequestMethod.GET, produces = { "application/json" })
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     public Path getShortestPath(@PathVariable("mapId") final String id, @RequestParam("start") final String startId, @RequestParam("end") final String endId, HttpServletResponse response) {
 
-		final Map map = mapRepository.findById(id).orElse(null);
-		Path path = mapService.getShortestPath(map, startId, endId);
-		return path;
+		if(mapRepository.existsById(id))
+		{
+			MapRequest mapRequest = mapRepository.findById(id).orElse(null);
+			HashMap<String,HashMap<String,Double>> nodeMap = JsonUtil.getMapFromJson(mapRequest.getNodes());
+			//final MapRequest mapRequest = mapRepository.findById(id).orElse(null);
+			
+			System.out.println(nodeMap.get("a"));
+			INodeBuilder nodeBuilder = new BuildingNodeBuilder();
+			IEdgeBuilder edgeBuilder = new DefaultEdgeBuilder();
+			IGraphBuilder graphBuilder = new GraphBuilder(edgeBuilder, nodeBuilder);
+			GraphEngineer graphEngineer = new GraphEngineer(graphBuilder);
+			Map map = new Map(id,graphEngineer.makeGraph(nodeMap));
+			Path path = mapService.getShortestPath(map, startId, endId);
+			System.out.println("Path:"+path.getNodes());
+			return path;
+		}
+		else
+		{
+			return null;
+		}
     }
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -60,22 +78,24 @@ public class NavigationController {
 	@RequestMapping(value = "/test2", method = RequestMethod.POST, consumes = { "application/json" })
     @ResponseBody
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void createMap(@RequestBody final MapRequest mapRequest, HttpServletResponse response) {
+    public String createMap(@RequestBody final String mapDetails, HttpServletResponse response) {
 		
-		String mapId = mapRequest.getId();
-		HashMap<String,HashMap<String,Double>> nodeMap = mapRequest.getNodes();
-
-		 Map map = mapRepository.findById(mapId).orElse(null);
+		String mapId =  JsonUtil.getId(mapDetails,"id");
+		String nodes =  JsonUtil.getNestedJson(mapDetails,"nodes");
+		HashMap<String,HashMap<String,Double>> nodeMap = JsonUtil.getMapFromJson(nodes);
+		MapRequest mapRequest = new MapRequest(mapId,nodes);
+		//String mapId = mapRequest.getId();
 		//need to add preconditions
-		if(map == null)
+		//if(!mapRepository.existsById(mapId))
 		{
-			INodeBuilder nodeBuilder = new BuildingNodeBuilder();
-			IEdgeBuilder edgeBuilder = new DefaultEdgeBuilder();
-			IGraphBuilder graphBuilder = new GraphBuilder(edgeBuilder, nodeBuilder);
-			GraphEngineer graphEngineer = new GraphEngineer(graphBuilder);
-			map = new Map(mapId,graphEngineer.makeGraph(nodeMap));
-			mapRepository.save(map);
+			mapRepository.save(mapRequest);
+			System.out.println(nodeMap.get("a"));
+			MapRequest mapRequest1 = mapRepository.findById(mapId).orElse(null);
+			nodeMap = JsonUtil.getMapFromJson(mapRequest1.getNodes());
+			System.out.println(nodeMap.values());
 		}
+		return "ok";
+	
     }
 
 }

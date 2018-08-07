@@ -17,23 +17,6 @@ public class GraphEngineer {
 		this.graphBuilder = graphBuilder;
 	}
 	
-	public SimpleDirectedWeightedGraph<INode, IEdge> makeGraph(String json)
-	{
-		HashMap<String,HashMap<String,Double>> nodeMap = JsonUtil.getMapFromJson(json);
-		for(String v1 : nodeMap.keySet())
-		{
-			HashMap<String,Double> map = nodeMap.get(v1);
-			INode source = graphBuilder.addVertex(v1);
-			for(String v2 : map.keySet())
-			{
-				INode destination = graphBuilder.addVertex(v2);
-				double distance = map.get(v2);
-				graphBuilder.addEdge(source, destination, distance);
-				
-			}
-		}
-		return graphBuilder.getGraph();
-	}
 	
 	public SimpleDirectedWeightedGraph<INode, IEdge> makeGraph(HashMap<String,HashMap<String,Double>> nodeMap)
 	{
