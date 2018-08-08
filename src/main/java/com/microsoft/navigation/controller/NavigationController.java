@@ -73,13 +73,11 @@ public class NavigationController {
 		
 		String mapId =  JsonUtil.getId(mapDetails,"id");
 		String nodes =  JsonUtil.getNestedJson(mapDetails,"nodes");
-		//HashMap<String,HashMap<String,Double>> nodeMap = JsonUtil.getMapFromJson(nodes);
 		MapRequest mapRequest = new MapRequest(mapId,nodes);
+		System.out.println(mapId+" : "+mapRepository.existsById(mapId));
 		if(!mapRepository.existsById(mapId))
 		{
 			mapRepository.save(mapRequest);
-			//MapRequest mapRequest1 = mapRepository.findById(mapId).orElse(null);
-			//nodeMap = JsonUtil.getMapFromJson(mapRequest1.getNodes());
 		}
 		else
 		{
