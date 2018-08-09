@@ -1,41 +1,48 @@
 package com.microsoft.navigation.builder;
 
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
+import com.microsoft.navigation.model.Graph;
 import com.microsoft.navigation.model.IEdge;
 import com.microsoft.navigation.model.INode;
 
+
 public class GraphBuilder implements IGraphBuilder {
 	
-	private SimpleDirectedWeightedGraph<INode, IEdge> graph;
+	private Graph graph;
 	private IEdgeBuilder edgeBuilder;
 	private INodeBuilder nodeBuilder;
 	
 	public GraphBuilder(IEdgeBuilder edgeBuilder, INodeBuilder nodeBuilder)
 	{
-		this.graph = new SimpleDirectedWeightedGraph<INode,IEdge>(IEdge.class);
+		this.graph = new Graph();
 		this.edgeBuilder = edgeBuilder;
 		this.nodeBuilder = nodeBuilder;
 	}
 	
-	public INode addVertex(String id)
-	{
-		INode node = nodeBuilder.createNode(id);
-		graph.addVertex(node);
-		return node;
+	@Override
+	public INode addVertex(String id) {
+		INode vertex = nodeBuilder.createNode(id);
+		graph.add(vertex);
+		return vertex;
 	}
+	
 	
 	public IEdge addEdge(INode source, INode destination, double distance)
 	{
 		IEdge edge = edgeBuilder.createEdge(source, destination, distance);
-		graph.addEdge(source, destination, edge);
-		graph.setEdgeWeight(edge, distance);
 		return edge;
 	}
 	
-	public SimpleDirectedWeightedGraph<INode, IEdge> getGraph()
+	public Graph getGraph()
 	{
 		return this.graph;
 	}
+
+	
+
 
 }

@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,6 @@ import com.microsoft.navigation.common.GraphEngineer;
 import com.microsoft.navigation.common.JsonUtil;
 import com.microsoft.navigation.exceptions.MapAlreadyExistsException;
 import com.microsoft.navigation.exceptions.MapNotFoundException;
-import com.microsoft.navigation.model.Map;
 import com.microsoft.navigation.model.MapRequest;
 import com.microsoft.navigation.model.Path;
 import com.microsoft.navigation.repo.IMapRepository;
@@ -55,8 +53,7 @@ public class NavigationController {
 			IEdgeBuilder edgeBuilder = new DefaultEdgeBuilder();
 			IGraphBuilder graphBuilder = new GraphBuilder(edgeBuilder, nodeBuilder);
 			GraphEngineer graphEngineer = new GraphEngineer(graphBuilder);
-			Map map = new Map(id,graphEngineer.makeGraph(nodeMap));
-			Path path = mapService.getShortestPath(map, startId, endId);
+			Path path = mapService.getShortestPath(graphEngineer.makeGraph(nodeMap), startId, endId);
 			return path;
 			
 		}
