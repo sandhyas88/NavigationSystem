@@ -10,12 +10,9 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.springframework.stereotype.Service;
 
-import com.microsoft.navigation.exceptions.NavigationSystemException;
+import com.google.common.base.Preconditions;
 import com.microsoft.navigation.model.Graph;
 import com.microsoft.navigation.model.IEdge;
 import com.microsoft.navigation.model.INode;
@@ -28,6 +25,9 @@ public class MapService implements IMapService {
 	@Override
 	public Path getShortestPath(Graph graph, String sourceId, String destinationId) {
 
+		Preconditions.checkNotNull(graph, "Graph cannot be null");
+		Preconditions.checkArgument(!sourceId.isEmpty(), "Source node cant be empty");
+		Preconditions.checkArgument(!destinationId.isEmpty(), "Destination node cant be empty");
 		INode source = graph.getNodeById(sourceId);
 		INode destination = graph.getNodeById(destinationId);
 		Map<INode, PathNode> result = new HashMap<>();

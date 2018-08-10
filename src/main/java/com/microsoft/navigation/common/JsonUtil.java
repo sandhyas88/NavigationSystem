@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Preconditions;
 import com.microsoft.navigation.exceptions.NavigationSystemException;
 
 public class JsonUtil {
@@ -17,6 +18,7 @@ public class JsonUtil {
 	
 	public static HashMap<String,HashMap<String,Double>> getMapFromJson(String json)
 	{
+		Preconditions.checkArgument(!json.isEmpty(), "json string cannot be empty");
 		HashMap<String,HashMap<String,Double>> nodeMap = null;
 		try {
 			
@@ -32,6 +34,8 @@ public class JsonUtil {
 	
 	public static String getId(String json, String name)
 	{
+		Preconditions.checkArgument(!json.isEmpty(), "json string cannot be empty");
+		Preconditions.checkArgument(!name.isEmpty(), "name cannot be empty");
 		JsonNode rootNode;
 		try {
 			rootNode = mapper.readTree(json);
@@ -46,6 +50,8 @@ public class JsonUtil {
 	
 	public static String getNestedJson(String json, String name)
 	{
+		Preconditions.checkArgument(!json.isEmpty(), "json string cannot be empty");
+		Preconditions.checkArgument(!name.isEmpty(), "name cannot be empty");
 		JsonNode rootNode;
 		try {
 			rootNode = mapper.readTree(json);

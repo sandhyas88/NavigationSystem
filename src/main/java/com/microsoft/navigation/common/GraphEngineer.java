@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import com.google.common.base.Preconditions;
 import com.microsoft.navigation.builder.IGraphBuilder;
 import com.microsoft.navigation.model.Graph;
 import com.microsoft.navigation.model.IEdge;
@@ -22,6 +23,7 @@ public class GraphEngineer {
 	// Directly parsing json for efficiency
 	public Graph makeGraph(HashMap<String,HashMap<String,Double>> nodeMap)
 	{
+		Preconditions.checkNotNull(nodeMap, "Graph cannot be made from an empty map");
 		for(Entry<String, HashMap<String,Double>> entry1 : nodeMap.entrySet())
 		{
 			INode node = graphBuilder.addVertex(entry1.getKey());

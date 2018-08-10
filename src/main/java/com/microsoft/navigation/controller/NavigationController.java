@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.base.Preconditions;
 import com.microsoft.navigation.builder.BuildingNodeBuilder;
 import com.microsoft.navigation.builder.DefaultEdgeBuilder;
 import com.microsoft.navigation.builder.GraphBuilder;
@@ -50,6 +51,7 @@ public class NavigationController {
 
 		if (mapRepository.existsById(id)) {
 			MapRequest mapRequest = mapRepository.findById(id).orElse(null);
+			Preconditions.checkNotNull(mapRequest);
 			HashMap<String, HashMap<String, Double>> nodeMap = JsonUtil.getMapFromJson(mapRequest.getNodes());
 			INodeBuilder nodeBuilder = new BuildingNodeBuilder();
 			IEdgeBuilder edgeBuilder = new DefaultEdgeBuilder();
