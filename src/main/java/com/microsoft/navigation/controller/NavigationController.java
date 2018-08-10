@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,8 @@ public class NavigationController {
 	@Autowired
 	private IMapRepository mapRepository;
 
-	@RequestMapping(value = "/{mapId}/path", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(value = "/{mapId}/path", method = RequestMethod.GET, produces = {
+			MediaType.APPLICATION_JSON_VALUE })
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public Path getShortestPath(@PathVariable("mapId") final String id, @RequestParam("start") final String startId,
@@ -59,9 +61,11 @@ public class NavigationController {
 		} else {
 			throw new MapNotFoundException("Map does not exist");
 		}
+
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = { "application/json" })
+	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE }) // "application/json"
+																												// })
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public void createMap(@RequestBody final String mapDetails, HttpServletResponse response) {
