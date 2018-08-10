@@ -2,8 +2,8 @@
 
 # Requirements
 
-Apache Tomcat 9
-Redis 2.0
+1) Apache Tomcat 9
+2) Redis 2.0
 
 # Approach used
 
@@ -19,15 +19,15 @@ Map is represented as a graph characterized by a set of nodes, each node having 
 
 # How to test
 
-# Controller unit test
+## Controller unit test
 
  mvn '-Dtest=com.microsoft.navigation.controller.*Test' test
 
-# Integration test
+## Integration test
 
  mvn '-Dtest=com.microsoft.navigation.integration.*Test' test
 
- # Memory performance
+## Memory performance
 
  mvn '-Dtest=com.microsoft.navigation.performance.*Test' test
 
