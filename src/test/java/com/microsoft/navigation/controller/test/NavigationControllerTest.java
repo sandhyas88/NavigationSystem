@@ -1,4 +1,4 @@
-package com.microsoft.navigation.controller;
+package com.microsoft.navigation.controller.test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.microsoft.navigation.config.ApplicationConfig;
 import com.microsoft.navigation.constants.TestConstants;
+import com.microsoft.navigation.controller.NavigationController;
 import com.microsoft.navigation.model.MapRequest;
 import com.microsoft.navigation.repo.IMapRepository;
 import com.microsoft.navigation.service.IMapService;

@@ -28,6 +28,7 @@ import com.microsoft.navigation.config.RedisConfig;
 import com.microsoft.navigation.constants.TestConstants;
 import com.microsoft.navigation.model.MapRequest;
 import com.microsoft.navigation.repo.IMapRepository;
+import com.microsoft.navigation.test.common.JsonUtil;
 
 import redis.embedded.RedisServer;
 
@@ -133,5 +134,5 @@ public class NavigationSystemIntegrationTest {
         
 	}
     
-
+    
 }

@@ -24,13 +24,13 @@ import com.microsoft.navigation.builder.IEdgeBuilder;
 import com.microsoft.navigation.builder.IGraphBuilder;
 import com.microsoft.navigation.builder.INodeBuilder;
 import com.microsoft.navigation.common.GraphEngineer;
-import com.microsoft.navigation.common.JsonUtil;
 import com.microsoft.navigation.exceptions.MapAlreadyExistsException;
 import com.microsoft.navigation.exceptions.MapNotFoundException;
 import com.microsoft.navigation.model.MapRequest;
 import com.microsoft.navigation.model.Path;
 import com.microsoft.navigation.repo.IMapRepository;
 import com.microsoft.navigation.service.IMapService;
+import com.microsoft.navigation.common.JsonUtil;
 
 @RestController
 @RequestMapping(value = "/maps")

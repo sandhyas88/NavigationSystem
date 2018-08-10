@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.microsoft.navigation.exceptions.NavigationSystemException;
+import com.microsoft.navigation.common.JsonUtil;
 
 public class JsonUtil {
 	

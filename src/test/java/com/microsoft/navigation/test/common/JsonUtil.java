@@ -1,4 +1,4 @@
-package com.microsoft.navigation.common;
+package com.microsoft.navigation.test.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,12 +10,12 @@ public class JsonUtil {
 	static final ObjectMapper mapper = new ObjectMapper();
 
 	public static String createPerfJsonRequest() throws JsonProcessingException {
-		ObjectMapper mapper = new ObjectMapper();
+		System.out.println("creating json...");
 		JsonNode rootNode = mapper.createObjectNode();
 
 		for (Integer i = 0; i < 100000; i++) {
 			JsonNode childNode1 = mapper.createObjectNode();
-			for (Integer j = 0; j < 100000; j++) {
+			for (Integer j = 0; j < 100; j++) {
 				if (i == j)
 					continue;
 
@@ -24,8 +24,9 @@ public class JsonUtil {
 
 			((ObjectNode) rootNode).set(i.toString(), childNode1);
 		}
-
+		System.out.println("writing value as string");
 		String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
+		System.out.println("finished creating json.....");
 		return jsonString;
 	}
 
