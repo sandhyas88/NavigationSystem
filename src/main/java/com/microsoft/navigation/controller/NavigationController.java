@@ -32,6 +32,7 @@ import com.microsoft.navigation.repo.IMapRepository;
 import com.microsoft.navigation.service.IMapService;
 import com.microsoft.navigation.common.JsonUtil;
 
+
 @RestController
 @RequestMapping(value = "/maps")
 public class NavigationController {
@@ -46,7 +47,7 @@ public class NavigationController {
 			MediaType.APPLICATION_JSON_VALUE })
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Path getShortestPath(@PathVariable("mapId") final String id, @RequestParam("start") final String startId,
+	public String getShortestPath(@PathVariable("mapId") final String id, @RequestParam("start") final String startId,
 			@RequestParam("end") final String endId, HttpServletResponse response) {
 
 		if (mapRepository.existsById(id)) {
@@ -58,7 +59,7 @@ public class NavigationController {
 			IGraphBuilder graphBuilder = new GraphBuilder(edgeBuilder, nodeBuilder);
 			GraphEngineer graphEngineer = new GraphEngineer(graphBuilder);
 			Path path = mapService.getShortestPath(graphEngineer.makeGraph(nodeMap), startId, endId);
-			return path;
+			return JsonUtil.objectToString(path);
 
 		} else {
 			throw new MapNotFoundException("Map does not exist");
@@ -66,8 +67,7 @@ public class NavigationController {
 
 	}
 
-	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE }) // "application/json"
-																												// })
+	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = { MediaType.APPLICATION_JSON_VALUE }) 
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public void createMap(@RequestBody final String mapDetails, HttpServletResponse response) {

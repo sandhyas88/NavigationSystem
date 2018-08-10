@@ -1,13 +1,11 @@
 package com.microsoft.navigation.performance;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -25,10 +24,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.microsoft.navigation.config.ApplicationConfig;
 import com.microsoft.navigation.config.RedisConfig;
-import com.microsoft.navigation.constants.TestConstants;
 import com.microsoft.navigation.model.MapRequest;
 import com.microsoft.navigation.repo.IMapRepository;
 import com.microsoft.navigation.test.common.JsonUtil;
+import com.microsoft.navigation.test.constants.TestConstants;
 
 import redis.embedded.RedisServer;
 
@@ -52,7 +51,7 @@ public class NavigationSystemPerformanceTest {
     @Before
     public void setup() throws Exception {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        mapRepository.deleteAll();
+        mapRepository.deleteById(TestConstants.MAPID);
     }
     
     @BeforeClass
@@ -71,10 +70,9 @@ public class NavigationSystemPerformanceTest {
 		
 		MapRequest map = new MapRequest(TestConstants.MAPID, JsonUtil.createPerfJsonRequest());
 		mapRepository.save(map);
-		this.mockMvc.perform(get("/maps/testMapA/path?start=1&end=3")).andExpect(status().isOk())
-				.andExpect(content().contentType(TestConstants.APPLICATION_JSON_UTF8))
+		this.mockMvc.perform(get("/maps/"+TestConstants.MAPID+"/path?start=1&end=3")).andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(jsonPath("$.totalDistance").value(1));
-		mapRepository.deleteAll();
 	}
     
 }

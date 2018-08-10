@@ -5,9 +5,11 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.base.Preconditions;
 import com.microsoft.navigation.exceptions.NavigationSystemException;
 import com.microsoft.navigation.common.JsonUtil;
@@ -30,6 +32,21 @@ public class JsonUtil {
 		}
 		return nodeMap;
 		
+	}
+	
+	public static String objectToString(Object object)
+	{
+		if(object == null)
+			return "null";
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = null;
+		try {
+			json = ow.writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			logger.error("Error in converting object to json" + json,e);
+			throw new NavigationSystemException("Error in converting object to json" + json,e);
+		}
+		return json;
 	}
 	
 	

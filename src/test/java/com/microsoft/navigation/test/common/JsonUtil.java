@@ -10,7 +10,6 @@ public class JsonUtil {
 	static final ObjectMapper mapper = new ObjectMapper();
 
 	public static String createPerfJsonRequest() throws JsonProcessingException {
-		System.out.println("creating json...");
 		JsonNode rootNode = mapper.createObjectNode();
 
 		for (Integer i = 0; i < 100000; i++) {
@@ -24,9 +23,7 @@ public class JsonUtil {
 
 			((ObjectNode) rootNode).set(i.toString(), childNode1);
 		}
-		System.out.println("writing value as string");
 		String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
-		System.out.println("finished creating json.....");
 		return jsonString;
 	}
 

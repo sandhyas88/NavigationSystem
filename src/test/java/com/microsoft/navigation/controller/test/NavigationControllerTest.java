@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -24,12 +25,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.microsoft.navigation.config.ApplicationConfig;
-import com.microsoft.navigation.constants.TestConstants;
 import com.microsoft.navigation.controller.NavigationController;
 import com.microsoft.navigation.model.MapRequest;
 import com.microsoft.navigation.repo.IMapRepository;
 import com.microsoft.navigation.service.IMapService;
 import com.microsoft.navigation.service.MapService;
+import com.microsoft.navigation.test.constants.TestConstants;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { ApplicationConfig.class })
@@ -59,7 +60,7 @@ public class NavigationControllerTest {
 		Mockito.when(mapRepositoryMock.existsById(Mockito.anyString())).thenReturn(false);
 		Mockito.when(mapRepositoryMock.save(Mockito.any())).thenReturn(null);
 
-		mockMvc.perform(post("/maps/").contentType(TestConstants.APPLICATION_JSON_UTF8).content(TestConstants.MAPJSON))
+		mockMvc.perform(post("/maps/").contentType(MediaType.APPLICATION_JSON_VALUE).content(TestConstants.MAPJSON))
 				.andExpect(status().isCreated());
 
 	}
@@ -69,7 +70,7 @@ public class NavigationControllerTest {
 
 		Mockito.when(mapRepositoryMock.existsById(Mockito.anyString())).thenReturn(true);
 
-		mockMvc.perform(post("/maps/").contentType(TestConstants.APPLICATION_JSON_UTF8).content(TestConstants.MAPJSON))
+		mockMvc.perform(post("/maps/").contentType(MediaType.APPLICATION_JSON_VALUE).content(TestConstants.MAPJSON))
 				.andExpect(status().isConflict());
 
 	}
@@ -79,7 +80,7 @@ public class NavigationControllerTest {
 		MapRequest mr = new MapRequest(TestConstants.MAPID, TestConstants.MAPNODES);
 		Mockito.when(mapRepositoryMock.findById(Mockito.anyString())).thenReturn(Optional.of(mr));
 		Mockito.when(mapRepositoryMock.existsById(Mockito.anyString())).thenReturn(false);
-		this.mockMvc.perform(get("/maps/testMapA/path?start=b&end=a")).andExpect(status().isNotFound());
+		this.mockMvc.perform(get("/maps/"+TestConstants.MAPID+"/path?start=b&end=a")).andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -87,7 +88,7 @@ public class NavigationControllerTest {
 		MapRequest mr = new MapRequest(TestConstants.MAPID, TestConstants.MAPNODES);
 		Mockito.when(mapRepositoryMock.existsById(Mockito.anyString())).thenReturn(true);
 		Mockito.when(mapRepositoryMock.findById(Mockito.anyString())).thenReturn(Optional.of(mr));
-		this.mockMvc.perform(get("/maps/testMapA/path?start=b&end=k")).andExpect(status().isBadRequest());
+		this.mockMvc.perform(get("/maps/"+TestConstants.MAPID+"/path?start=b&end=k")).andExpect(status().isBadRequest());
 	}
 
 	@Test
@@ -95,8 +96,8 @@ public class NavigationControllerTest {
 		MapRequest mr = new MapRequest(TestConstants.MAPID, TestConstants.MAPNODES);
 		Mockito.when(mapRepositoryMock.existsById(Mockito.anyString())).thenReturn(true);
 		Mockito.when(mapRepositoryMock.findById(Mockito.anyString())).thenReturn(Optional.of(mr));
-		this.mockMvc.perform(get("/maps/testMapA/path?start=b&end=p")).andExpect(status().isOk())
-				.andExpect(content().string(""));
+		this.mockMvc.perform(get("/maps/"+TestConstants.MAPID+"/path?start=b&end=p")).andExpect(status().isOk())
+				.andExpect(content().string("null"));
 	}
 
 	@Test
@@ -108,8 +109,7 @@ public class NavigationControllerTest {
 		arr.add("b");
 		arr.add("c");
 		arr.add("a");
-		this.mockMvc.perform(get("/maps/testMapA/path?start=b&end=a")).andExpect(status().isOk())
-				.andExpect(content().contentType(TestConstants.APPLICATION_JSON_UTF8))
+		this.mockMvc.perform(get("/maps/"+TestConstants.MAPID+"/path?start=b&end=a")).andExpect(status().isOk())
 				.andExpect(jsonPath("$.totalDistance").value(10)).andExpect(jsonPath("$.path").value(arr));
 	}
 
@@ -117,7 +117,7 @@ public class NavigationControllerTest {
 	public void testCreateMap_ok() throws Exception {
 
 		this.mockMvc
-				.perform(post("/maps/").contentType(TestConstants.APPLICATION_JSON_UTF8).content(TestConstants.MAPJSON))
+				.perform(post("/maps/").contentType(MediaType.APPLICATION_JSON_VALUE).content(TestConstants.MAPJSON))
 				.andExpect(status().isCreated());
 
 	}
@@ -126,7 +126,7 @@ public class NavigationControllerTest {
 	public void testCreateMap_Conflict() throws Exception {
 		Mockito.when(mapRepositoryMock.existsById(Mockito.anyString())).thenReturn(true);
 		this.mockMvc
-				.perform(post("/maps/").contentType(TestConstants.APPLICATION_JSON_UTF8).content(TestConstants.MAPJSON))
+				.perform(post("/maps/").contentType(MediaType.APPLICATION_JSON_VALUE).content(TestConstants.MAPJSON))
 				.andExpect(status().isConflict());
 
 	}
