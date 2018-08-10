@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +39,8 @@ import com.microsoft.navigation.common.JsonUtil;
 @RequestMapping(value = "/maps")
 public class NavigationController {
 
+	private static Logger logger = LoggerFactory.getLogger(NavigationController.class);
+	
 	@Autowired
 	private IMapService mapService;
 
@@ -62,6 +66,7 @@ public class NavigationController {
 			return JsonUtil.objectToString(path);
 
 		} else {
+			logger.error("Map does not exist");
 			throw new MapNotFoundException("Map does not exist");
 		}
 
@@ -78,6 +83,7 @@ public class NavigationController {
 		if (!mapRepository.existsById(mapId)) {
 			mapRepository.save(mapRequest);
 		} else {
+			logger.error("Map with the same id exists");
 			throw new MapAlreadyExistsException("Map with the same id exists");
 		}
 
