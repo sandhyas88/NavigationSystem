@@ -26,8 +26,8 @@ public class GraphBuilder implements IGraphBuilder {
 	@Override
 	public INode addVertex(String id) {
 		INode vertex = nodeBuilder.createNode(id);
-		graph.add(vertex);
-		return vertex;
+		INode addedVertex = graph.add(vertex);
+		return addedVertex;
 	}
 	
 	

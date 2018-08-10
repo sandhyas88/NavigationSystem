@@ -34,7 +34,5 @@ public class PathNode {
 	public void setPrevious(PathNode uNode) {
 		this.previous = uNode;
 	}
-	
-	
 
 }

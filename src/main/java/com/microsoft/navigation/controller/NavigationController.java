@@ -33,54 +33,48 @@ import com.microsoft.navigation.service.IMapService;
 @RestController
 @RequestMapping(value = "/maps")
 public class NavigationController {
-	
+
 	@Autowired
 	private IMapService mapService;
-	
+
 	@Autowired
 	private IMapRepository mapRepository;
-	
-	@RequestMapping(value = "/{mapId}/path", method = RequestMethod.GET, produces = { "application/json" })
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.OK)
-    public Path getShortestPath(@PathVariable("mapId") final String id, @RequestParam("start") final String startId, @RequestParam("end") final String endId, HttpServletResponse response) {
 
-		if(mapRepository.existsById(id))
-		{
+	@RequestMapping(value = "/{mapId}/path", method = RequestMethod.GET, produces = { "application/json" })
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public Path getShortestPath(@PathVariable("mapId") final String id, @RequestParam("start") final String startId,
+			@RequestParam("end") final String endId, HttpServletResponse response) {
+
+		if (mapRepository.existsById(id)) {
 			MapRequest mapRequest = mapRepository.findById(id).orElse(null);
-			HashMap<String,HashMap<String,Double>> nodeMap = JsonUtil.getMapFromJson(mapRequest.getNodes());
+			HashMap<String, HashMap<String, Double>> nodeMap = JsonUtil.getMapFromJson(mapRequest.getNodes());
 			INodeBuilder nodeBuilder = new BuildingNodeBuilder();
 			IEdgeBuilder edgeBuilder = new DefaultEdgeBuilder();
 			IGraphBuilder graphBuilder = new GraphBuilder(edgeBuilder, nodeBuilder);
 			GraphEngineer graphEngineer = new GraphEngineer(graphBuilder);
 			Path path = mapService.getShortestPath(graphEngineer.makeGraph(nodeMap), startId, endId);
 			return path;
-			
-		}
-		else
-		{
+
+		} else {
 			throw new MapNotFoundException("Map does not exist");
 		}
-    }
-	
+	}
+
 	@RequestMapping(value = "/", method = RequestMethod.POST, consumes = { "application/json" })
-    @ResponseBody
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void createMap(@RequestBody final String mapDetails, HttpServletResponse response) {
-		
-		String mapId =  JsonUtil.getId(mapDetails,"id");
-		String nodes =  JsonUtil.getNestedJson(mapDetails,"nodes");
-		MapRequest mapRequest = new MapRequest(mapId,nodes);
-		System.out.println(mapId+" : "+mapRepository.existsById(mapId));
-		if(!mapRepository.existsById(mapId))
-		{
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.CREATED)
+	public void createMap(@RequestBody final String mapDetails, HttpServletResponse response) {
+
+		String mapId = JsonUtil.getId(mapDetails, "id");
+		String nodes = JsonUtil.getNestedJson(mapDetails, "nodes");
+		MapRequest mapRequest = new MapRequest(mapId, nodes);
+		if (!mapRepository.existsById(mapId)) {
 			mapRepository.save(mapRequest);
-		}
-		else
-		{
+		} else {
 			throw new MapAlreadyExistsException("Map with the same id exists");
 		}
-	
-    }
+
+	}
 
 }

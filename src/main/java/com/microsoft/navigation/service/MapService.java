@@ -49,6 +49,7 @@ public class MapService implements IMapService {
 			visited.add(originalNode);
 			Set<IEdge> edges = originalNode.getAdjacencySet();
 			for (IEdge edge : edges) {
+
 				INode v = edge.getDestination();
 				double w = edge.getDistance();
 				if (visited.contains(v)) {
@@ -60,13 +61,13 @@ public class MapService implements IMapService {
 					newNode.setMinDistance(pathNode.getMinDistance() + w);
 					newNode.setPrevious(pathNode);
 					queue.add(newNode);
-					result.put(v, existingNode);
+					result.put(v, newNode);
 				}
 			}
 		}
 		PathNode destinationPathNode = result.get(destination);
 		if (destinationPathNode == null) {
-			throw new RuntimeException("no path found");
+			return null;
 		}
 		List<PathNode> pathNodes = new ArrayList<PathNode>();
 		for (PathNode vertex = destinationPathNode; vertex != null; vertex = vertex.getPrevious()) {
@@ -74,7 +75,7 @@ public class MapService implements IMapService {
 		}
 
 		Collections.reverse(pathNodes);
-		String[] nodeArr = pathNodes.stream().map(node -> node.toString()).toArray(String[]::new);
+		String[] nodeArr = pathNodes.stream().map(node -> node.getNode().getId()).toArray(String[]::new);
 		Path path = new Path(destinationPathNode.getMinDistance(), nodeArr);
 
 		return path;
